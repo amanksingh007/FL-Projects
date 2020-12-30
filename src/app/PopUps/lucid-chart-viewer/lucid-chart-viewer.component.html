@@ -1,0 +1,6 @@
+<a class="btn-close" (click)="closeModal()"></a>
+<div class="chart" style= "width: 80%; height: 100%; margin: 10px; ">
+    <iframe allowfullscreen frameborder="0" style="width: 100%" 
+        [src]="embedUrl | urlSanitizer" id= {{embedId}}>
+    </iframe>
+</div>
