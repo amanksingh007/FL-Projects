@@ -17,7 +17,21 @@ export class HomeComponent implements OnInit {
 
   viewChart() {
     const initialState = {
-      code: this.embeded,
+      embedUrl: "https://lucid.app/documents/embeddedchart/5c9a06a0-cb91-40cf-a20d-f429827de532",
+      embedId : "cyL1gmBwocSu"
+    };
+    const config: ModalOptions = { class: 'modal-sm' };
+    this.bsModalRef = this.modalService.show(LucidChartViewerComponent, {
+      initialState
+    });
+    //this.bsModalRef.setClass('modal-sm');
+    this.bsModalRef.content.closeBtnName = "Close";
+  }
+  viewCustomChart(data: any) {
+    console.log(data);
+    const initialState = {
+      embedUrl: data.embedUrl,
+      embedId: data.embedId
     };
     const config: ModalOptions = { class: 'modal-sm' };
     this.bsModalRef = this.modalService.show(LucidChartViewerComponent, {

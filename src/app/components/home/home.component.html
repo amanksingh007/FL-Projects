@@ -1,1 +1,10 @@
-<button class="btn btn-primary btn-view" (click)="viewChart()">View Chart</button>
+
+<div class="log-form">
+    <h2>Login to your account</h2>
+    <form #f="ngForm" (ngSubmit)="viewCustomChart(f.value)">
+      <input ngModel type="url" name="embedUrl" title="Enter embed Url" placeholder="Enter embed Url" />
+      <input ngModel type="text" name="embedId" title="Enter embed ID" placeholder="Enter embed ID" />
+      <button type="submit" class="btn">View Chart</button>
+      <a class="forgot" (click)="viewChart()">View Default</a>
+    </form>
+</div>
