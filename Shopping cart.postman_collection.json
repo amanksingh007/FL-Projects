@@ -1,0 +1,120 @@
+{
+	"info": {
+		"_postman_id": "baeb7085-45cd-41a7-aea3-228d8e0a11f7",
+		"name": "Shopping cart",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add to cart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user\":\r\n    {\r\n     \"userId\":\"savi@1988\",\r\n    \"userName\": \"Girijamba\",\r\n    \"userPassword\": \"*****\",\r\n    \"mobileNo\": \"8748887542\",\r\n    \"address\":\r\n        {\r\n            \"addressId\":\"8897\",\r\n            \"buildingNo\":125,\r\n            \"streetName\":\"ksc\",\r\n            \"area\":\"VRpuram\",\r\n            \"city\":\"Banglore\",\r\n            \"state\":\"Karnataka\",\r\n            \"zip\":100\r\n        }\r\n    ,\r\n    \"userType\":\"salesrep\"\r\n    }\r\n    ,\r\n\"products\":[\r\n    {\r\n       \"productName\":\"pen\",\r\n      \"price\":15,\r\n      \"image\":\"hidden\",\r\n      \"quantity\":\"1\",\r\n      \"manufacturer\":\"Class\",\r\n      \"specification\":\"black\",\r\n      \"category\":\"Stationery\"\r\n\r\n    }],\r\n    \"cartTotalPrice\":200,\r\n    \"totalQuantity\":18\r\n\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/greatoutdoor/addCart",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"greatoutdoor",
+						"addCart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find cartlist based on userid",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/greatoutdoor/cartlist/savi@1988",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"greatoutdoor",
+						"cartlist",
+						"savi@1988"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find cartlist based on productid and userid",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/greatoutdoor/cartItem/14/savi@1988",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"greatoutdoor",
+						"cartItem",
+						"14",
+						"savi@1988"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete based on cartid and product id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/greatoutdoor/deletecartlist/13/14",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"greatoutdoor",
+						"deletecartlist",
+						"13",
+						"14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete based on userid",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/greatoutdoor/deletecartitem/samee@1977",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"greatoutdoor",
+						"deletecartitem",
+						"samee@1977"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
