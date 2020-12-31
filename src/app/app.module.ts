@@ -7,13 +7,15 @@ import { LoginComponent } from './components/login/login.component';
 import { ProductsComponent } from './components/products/products.component';
 import { CartitemsComponent } from './components/cartitems/cartitems.component';
 import { FormsModule } from '@angular/forms';
+import { ProductDetailsComponent } from './components/product-details/product-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     ProductsComponent,
-    CartitemsComponent
+    CartitemsComponent,
+    ProductDetailsComponent
   ],
   imports: [
     BrowserModule,
