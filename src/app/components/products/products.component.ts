@@ -14,7 +14,7 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
     this.mockService.getProducts().subscribe( res => {
       this.products = res;
-      console.log(this.products);
+      //console.log(this.products);
     })
   }
 

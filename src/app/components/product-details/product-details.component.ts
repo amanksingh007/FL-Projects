@@ -18,8 +18,13 @@ export class ProductDetailsComponent implements OnInit {
     this.mockService.getProductDetail(this.productId).subscribe( res =>{
       this.productDetails = res;
       console.log(this.productDetails);
-    })
-    
+    });
+    //console.log(this.mockService.getUser());
   }
-
+  addToLocalCart(){
+    this.mockService.addToLocalCart(this.productDetails);
+    console.log(this.productDetails);
+    alert("Item-Added");
+    console.log(this.mockService.getUser());
+  }
 }
