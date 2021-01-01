@@ -11,6 +11,8 @@ import { MockService } from 'src/app/services/mock.service';
 export class ProductDetailsComponent implements OnInit {
   productId:string=''
   productDetails:any;
+  arr=[1,2,3,4,5,6,7,8,9,10]
+  quan=1;
   constructor(private route:ActivatedRoute, private mockService: MockService) { }
 
   ngOnInit(): void {
@@ -22,6 +24,7 @@ export class ProductDetailsComponent implements OnInit {
     //console.log(this.mockService.getUser());
   }
   addToLocalCart(){
+    this.productDetails.quantity=this.quan;
     this.mockService.addToLocalCart(this.productDetails);
     console.log(this.productDetails);
     alert("Item-Added");

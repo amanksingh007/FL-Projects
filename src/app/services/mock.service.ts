@@ -72,7 +72,7 @@ export class MockService {
       productName:product.title,
       price:product.price,
       image:product.image,
-      quantity:1,
+      quantity:product.quantity,
       manufacturer:"XYZ",
       specification:product.description,
       category:product.category
@@ -87,21 +87,33 @@ export class MockService {
     let data=this.getUser();
     const addressId = uuid.v4();
     console.log(addressId);
+    let prc=0;let quan=0;
+    data.products.forEach(product => {
+      quan+=product.quantity;
+      prc+=product.quantity*product.price;
+    });
+    data.totalQuantity=quan;
+    data.totalPrice=prc;
     data.user.address.addressId = addressId;
     return this.http.post(api,data);
   }
   getCart(userId:string){
-    
+    const api = this.service+"/cartlist/"+this.getUser().user.userId;
+    return this.http.get(api);
   }
 
-  getCartByProductId(data){
-
+  getCartByProductIdAndUserId(productId){
+    const api = this.service+"/cartlist/"+productId+"/"+this.getUser().user.userId;
+    return this.http.get(api);
   }
 
-  deleteByCartIdAndProductId(){
 
+  deleteByCartIdAndProductId(item:any){
+    const api = this.service+"/deletecartlist/"+item.productId+"/"+item.cartId;
+    return this.http.delete(api);
   }
-  deleteByUserId(userId){
-
+  deleteByUserId(){
+    const api = this.service+"/deletecartitem/"+this.getUser().user.userId;
+    return this.http.delete(api);
   }
 }
