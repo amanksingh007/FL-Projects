@@ -30,8 +30,8 @@ export class MockService {
       }
       ,
     products:[],
-      cartTotalPrice:0,
-      totalQuantity:0
+    cartTotalPrice:0,
+    totalQuantity:0
   
   }
   
@@ -88,13 +88,18 @@ export class MockService {
     const addressId = uuid.v4();
     console.log(addressId);
     let prc=0;let quan=0;
-    data.products.forEach(product => {
-      quan+=product.quantity;
-      prc+=product.quantity*product.price;
-    });
+    for(let i=0;i<data.products.length;i++){
+      let product=data.products[i];
+      quan+=Number(product.quantity);
+      prc+=Number(product.quantity)*Number(product.price);
+      console.log(quan,prc);
+    }
+    console.log("End");
     data.totalQuantity=quan;
-    data.totalPrice=prc;
+    data.cartTotalPrice=prc;
     data.user.address.addressId = addressId;
+    this.saveUser();
+    console.log(this.getUser());
     return this.http.post(api,data);
   }
   getCart(userId:string){

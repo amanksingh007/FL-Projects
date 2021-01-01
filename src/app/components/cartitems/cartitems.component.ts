@@ -11,22 +11,35 @@ import { MockService } from 'src/app/services/mock.service';
 export class CartitemsComponent implements OnInit {
   constructor(private route:ActivatedRoute, private mockService: MockService) { }
   cart:any;
+  totalQuantity=0;
+  cartTotalPrice=0;
   ngOnInit(): void {
-    console.log(this.mockService.getUser());
-    this.cart= this.mockService.getUser().products;
-    console.log(this.cart);
+    //this.cart= this.mockService.getUser().products;
+    this.calculateTotal();
     this.mockService.addToCart().subscribe( res =>{
-      console.log(res);
       this.cart= this.mockService.getUser().products;
-      console.log(this.cart);
+      this.calculateTotal();
     },
     (err:HttpErrorResponse) => {
-      console.log(err);
       this.cart= this.mockService.getUser().products;
-      console.log(this.cart);
+      this.calculateTotal();
     })
   }
 
+  calculateTotal(){
+    let data=this.mockService.getUser();
+    let prc=0;let quan=0;
+    for(let i=0;i<data.products.length;i++){
+      let product=data.products[i];
+      quan+=Number(product.quantity);
+      prc+=Number(product.quantity)*Number(product.price);
+      console.log(quan,prc);
+    }
+    this.totalQuantity=quan;
+    this.cartTotalPrice=prc;
+    console.log("Cal");
+    console.log(this.totalQuantity,this.cartTotalPrice);
+  }
   removeCartItem(item){
     this.mockService.deleteByCartIdAndProductId(item).subscribe( res => {
       alert("Item-Removed");

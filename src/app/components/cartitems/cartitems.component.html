@@ -6,11 +6,23 @@
           <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
             <span class="font-semibold title-font text-white">{{item.category | titlecase}}</span>
             <span class="mt-1 text-gray-500 text-sm">Quantity : {{item.quantity}}</span>
+            <span class="mt-1 text-gray-500 text-sm">Price : {{(item.price | currency:'INR')}}</span>
           </div>
           <div class="md:flex-grow">
             <h2 class="text-2xl font-medium text-white title-font mb-2">{{item.title | titlecase}}</h2>
             <p class="leading-relaxed">{{item.specification | titlecase}}</p>
             <a (click)="removeCartItem(item)" class="text-pink-400 inline-flex items-center mt-4">Remove
+            </a>
+          </div>
+        </div>
+
+        <div class="py-8 flex flex-wrap md:flex-nowrap">
+          <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
+          </div>
+          <div class="md:flex-grow">
+            <h2 class="text-2xl font-medium text-white title-font mb-2">Total Price: {{cartTotalPrice}}</h2>
+            <h2 class="text-2xl font-medium text-white title-font mb-2">Total Quantity: {{totalQuantity}}</h2>
+            <a (click)="clearCart()" class="text-pink-400 inline-flex items-center mt-4">Clear Cart
             </a>
           </div>
         </div>
