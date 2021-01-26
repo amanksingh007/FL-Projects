@@ -1,0 +1,134 @@
+#Home-section {
+  position: relative;
+}
+
+.container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  background: url("https://s20.postimg.org/o09gf7fvx/bag.jpg") no-repeat center
+    top;
+  background-size: contain;
+}
+
+.banner-image {
+  /* background-image: linear-gradient(180deg, transparent 0, rgba(0,0,0,.6)),
+      url("/assets/iStock-641414198_TREATED_WHITE_DOTS_HIREZ_RGB.jpg");  
+    background-image: linear-gradient(180deg, transparent 0, rgba(0,0,0,.6)),
+      url("/assets/TREATED_WHITE_DOTS_HIREZ_RGB.webp"); */
+
+  height: 80px;
+  background-color: rgb(110, 190, 73);
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* background-position: center 90%;    */
+  background-position: center 81%;
+}
+
+.banner-text {
+  position: absolute;
+  top: 10px;
+  color: white;
+  margin: 0px 100px;
+  font-weight: 100 !important;
+  font-size: 35px;
+}
+
+.card-1 {
+  width: 100%;
+  height: auto;
+  background-clip: border-box;
+  -webkit-background-clip: text;
+  background: white;
+  border-color: green;
+  display: flexbox;
+}
+
+.card-2 {
+  background-clip: border-box;
+  -webkit-background-clip: text;
+  background: white;
+  border-color: green;
+  display: flexbox;
+}
+
+.card-3 {
+  background-clip: border-box;
+  -webkit-background-clip: text;
+  background: white;
+  border-color: green;
+  display: flexbox;
+}
+
+.card-4 {
+  background-clip: border-box;
+  -webkit-background-clip: text;
+  background: white;
+  border-color: green;
+  display: flexbox;
+}
+
+.card-5 {
+  background-clip: border-box;
+  -webkit-background-clip: text;
+  background: white;
+  border-color: green;
+}
+
+.card {
+  background-size: 100% 200%; /*stretch vertically*/
+  background-position: 0% 100%;
+  transition: background-position 275ms ease;
+  /* max-height: 28rem; */
+}
+
+.card:hover {
+  background-position: 0% 0%;
+}
+
+.card-text {
+  font-size: small;
+}
+
+.footer {
+  background: black;
+}
+
+.footer-text {
+  color: white;
+  font-size: medium;
+}
+
+.panel-body {
+  color: white;
+}
+
+div.panel-body > small {
+  margin: 0 5px;
+}
+
+@media only screen and (max-width: 500px) {
+  .info-sect {
+    height: 600px;
+  }
+}
+@media only screen and (max-width: 380px) {
+  .info-sect {
+    height: 700px;
+  }
+}
+@media only screen and (max-width: 334px) {
+  .info-sect {
+    height: 900px;
+  }
+}
+@media only screen and (max-width: 278px) {
+  .info-sect {
+    height: 980px;
+  }
+}
+@media only screen and (max-width: 278px) {
+  .info-sect {
+    height: 1200px;
+  }
+}
