@@ -1,0 +1,8 @@
+<agm-map
+  [latitude]="lat"
+  [longitude]="lng"
+  (mapClick)="placeMarker($event)"
+  (mapReady)="mapReadyHandler($event)"
+>
+  <agm-direction [origin]="origin" [destination]="destination"> </agm-direction>
+</agm-map>
