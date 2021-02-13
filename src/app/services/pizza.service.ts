@@ -916,7 +916,7 @@ export class PizzaService {
     parameters += apikey;
     const API = this.serviceUrl + parameters;
     const opts = { params: new HttpParams({ fromString: parameters }) };
-    const _API = 'http://localhost:4000/map/places'; // + parameters;
+    const _API = 'https://learners-portal.herokuapp.com/map/places';
     console.log(_API);
     return this.http.get(_API, opts);
   }
