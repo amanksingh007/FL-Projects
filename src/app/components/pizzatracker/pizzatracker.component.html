@@ -1,13 +1,27 @@
-<agm-map
-  [latitude]="lat"
-  [longitude]="lng"
-  (mapClick)="placeMarker($event)"
-  (mapReady)="mapReadyHandler($event)"
->
-  <agm-marker
-    [latitude]="latitude"
-    [longitude]="longitude"
-    [markerDraggable]="true"
-  ></agm-marker>
-  <agm-direction [origin]="origin" [destination]="destination"> </agm-direction>
-</agm-map>
+<div class="container">
+  <h3>Pizza Stores NearBy ({{ address }})</h3>
+  <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="10">
+    <agm-marker
+      *ngFor="let pizzastore of pizzaStores"
+      [latitude]="pizzastore?.geometry.location.lat"
+      [longitude]="pizzastore?.geometry.location.lng"
+      [markerDraggable]="true"
+      (markerClick)="drawDirection(pizzastore)"
+    ></agm-marker>
+    <agm-marker
+      [latitude]="latitude"
+      [longitude]="longitude"
+      [markerDraggable]="true"
+    ></agm-marker>
+    <agm-direction
+      *ngIf="showRoute"
+      [origin]="origin"
+      [destination]="destination"
+    >
+    </agm-direction>
+  </agm-map>
+  <h3 *ngIf="showRoute">
+    {{ currentPizzaStore.name | titlecase }}, Rating:
+    {{ currentPizzaStore.rating }}, Near {{ currentPizzaStore.vicinity }},
+  </h3>
+</div>

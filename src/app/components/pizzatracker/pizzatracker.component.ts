@@ -30,6 +30,8 @@ export class PizzatrackerComponent implements OnInit {
   longitude: any;
   private geoCoder: any;
   pizzaStores: any = [];
+  showRoute: boolean = false;
+  currentPizzaStore: any;
 
   @ViewChild('search')
   public searchElementRef: ElementRef | undefined;
@@ -41,7 +43,7 @@ export class PizzatrackerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getDirection();
+    //this.getDirection();
     this.mapsAPILoader.load().then(() => {
       this.setCurrentLocation();
       this.geoCoder = new google.maps.Geocoder();
@@ -53,8 +55,10 @@ export class PizzatrackerComponent implements OnInit {
         console.log(position);
         this.latitude = position.coords.latitude;
         this.longitude = position.coords.longitude;
+        this.origin = { lat: this.latitude, lng: this.longitude };
+        this.destination = { lat: this.latitude, lng: this.longitude };
         console.log(this.latitude + ',' + this.longitude);
-        this.zoom = 8;
+        //this.zoom = 40;
         this.getAddress(this.latitude, this.longitude);
       });
     }
@@ -67,7 +71,7 @@ export class PizzatrackerComponent implements OnInit {
       (results: any, status: any) => {
         if (status === 'OK') {
           if (results[0]) {
-            this.zoom = 12;
+            //this.zoom = 0;
             this.address = results[0].formatted_address;
             console.log(this.address);
           } else {
@@ -86,24 +90,35 @@ export class PizzatrackerComponent implements OnInit {
       type: 'restaurant',
       keyword: 'pizza',
       radius: '30000',
-      rankby: 'distance',
     };
     this._pizzaService.getPizzaStores(queryData).subscribe(
       (res) => {
-        console.log(res);
+        this.processStores(res['results']);
       },
       (err: HttpErrorResponse) => {}
     );
   }
+
+  processStores(stores) {
+    console.log(stores);
+    this.pizzaStores = stores;
+  }
   getDirection() {
-    this.origin = { lat: 24.799448, lng: 120.979021 };
+    this.origin = { lat: 24.799524, lng: 120.975017 };
     this.destination = { lat: 24.799524, lng: 120.975017 };
   }
 
+  drawDirection(dest) {
+    console.log(dest);
+    this.destination = {
+      lat: dest.geometry.location.lat,
+      lng: dest.geometry.location.lng,
+    };
+    this.currentPizzaStore = dest;
+    this.showRoute = true;
+  }
   placeMarker($event: any) {
     console.log($event);
-    // console.log($event.coords.lat);
-    // console.log($event.coords.lng);
   }
 
   public mapReadyHandler(map: google.maps.Map): void {
