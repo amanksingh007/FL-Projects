@@ -11,7 +11,8 @@ import { ResponsiveComponent } from './components/responsive/responsive.componen
 import { PizzatrackerComponent } from './components/pizzatracker/pizzatracker.component';
 import { AgmCoreModule } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';
-
+import { HttpClientModule } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,9 +28,10 @@ import { AgmDirectionModule } from 'agm-direction';
     AppRoutingModule,
     ModalModule.forRoot(),
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCT5bL9PgH0cgQbAknxpstJa4o4NjkQilU',
+      apiKey: environment.GMAP_KEY,
     }),
     AgmDirectionModule,
+    HttpClientModule,
   ],
   providers: [LucidChartViewerComponent],
   bootstrap: [AppComponent],

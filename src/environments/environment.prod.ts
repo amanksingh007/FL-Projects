@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  GMAP_KEY: 'AIzaSyCT5bL9PgH0cgQbAknxpstJa4o4NjkQilU',
 };
