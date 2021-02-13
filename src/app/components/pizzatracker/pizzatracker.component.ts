@@ -32,10 +32,26 @@ export class PizzatrackerComponent implements OnInit {
   pizzaStores: any = [];
   showRoute: boolean = false;
   currentPizzaStore: any;
-
+  Me: string = 'You';
   @ViewChild('search')
   public searchElementRef: ElementRef | undefined;
+  waypoints: any = [];
+  public renderOptions = {
+    suppressMarkers: true,
+  };
 
+  public markerOptions = {
+    origin: {
+      label: 'Me',
+      draggable: false,
+      waypoints: [],
+    },
+    destination: {
+      label: 'MARKER LABEL',
+      waypoints: [],
+    },
+    waypoints: {},
+  };
   constructor(
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone,

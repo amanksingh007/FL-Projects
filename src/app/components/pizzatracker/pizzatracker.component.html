@@ -5,19 +5,21 @@
       *ngFor="let pizzastore of pizzaStores"
       [latitude]="pizzastore?.geometry.location.lat"
       [longitude]="pizzastore?.geometry.location.lng"
-      [markerDraggable]="true"
+      [markerDraggable]="false"
       (markerClick)="drawDirection(pizzastore)"
     ></agm-marker>
     <agm-marker
       [latitude]="latitude"
       [longitude]="longitude"
       [markerDraggable]="true"
-      
+      [label]="Me"
     ></agm-marker>
     <agm-direction
       *ngIf="showRoute"
       [origin]="origin"
       [destination]="destination"
+      [renderOptions]="renderOptions"
+      [markerOptions]="markerOptions"
     >
     </agm-direction>
   </agm-map>
