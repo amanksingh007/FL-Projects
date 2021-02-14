@@ -12,6 +12,7 @@ import { PizzaService } from 'src/app/services/pizza.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
+
 @Component({
   selector: 'app-pizzatracker',
   templateUrl: './pizzatracker.component.html',
@@ -53,6 +54,7 @@ export class PizzatrackerComponent implements OnInit {
     destination: {
       label: 'Pizza',
       waypoints: [],
+      infoWindow:"23.7km,1hour"
     },
     waypoints: {},
   };

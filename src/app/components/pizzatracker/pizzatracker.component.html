@@ -20,7 +20,11 @@
       [longitude]="pizzastore?.geometry.location.lng"
       [markerDraggable]="false"
       (markerClick)="drawDirection(pizzastore)"
-    ></agm-marker>
+    >
+      <agm-info-window
+        >{{ travelDetails.distance }},{{ travelDetails.time }}</agm-info-window
+      >
+    </agm-marker>
     <agm-marker
       [latitude]="latitude"
       [longitude]="longitude"
