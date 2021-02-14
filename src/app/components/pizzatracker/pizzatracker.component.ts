@@ -38,6 +38,7 @@ export class PizzatrackerComponent implements OnInit {
   @ViewChild('search')
   public searchElementRef: ElementRef | undefined;
   waypoints: any = [];
+  travelDetails: any = { time: '', distnce: '' };
   @ViewChild('placesRef') placesRef: GooglePlaceDirective;
   public renderOptions = {
     suppressMarkers: true,
@@ -142,9 +143,17 @@ export class PizzatrackerComponent implements OnInit {
     };
     this.currentPizzaStore = dest;
     this.showRoute = true;
-  }
-  placeMarker($event: any) {
-    console.log($event);
+    const data = {
+      origin: this.origin.lat + ',' + this.origin.lng,
+      destination: this.destination.lat + ',' + this.destination.lng,
+      departure_time: 'now',
+    };
+    this._pizzaService.getTravelTime(data).subscribe((res) => {
+      console.log(res.results);
+      let data = res.results.routes[0].legs[0];
+      this.travelDetails.time = data.duration.text;
+      this.travelDetails.distance = data.distance.text;
+    });
   }
 
   public mapReadyHandler(map: google.maps.Map): void {
