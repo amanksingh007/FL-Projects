@@ -24,6 +24,7 @@
     "agm-direction": "^0.8.8",
     "export-to-csv": "^0.2.1",
     "ngx-bootstrap": "^6.2.0",
+    "ngx-google-places-autocomplete": "^2.0.5",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

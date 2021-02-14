@@ -1,5 +1,18 @@
 <div class="container">
-  <h3>Pizza Stores NearBy ({{ address }})</h3>
+  <h3>Pizza stores near {{ address }}.</h3>
+  <input
+    class="input-place-search"
+    ngx-google-places-autocomplete
+    #placesRef="ngx-places"
+    (onAddressChange)="handleAddressChange($event)"
+  />
+  <small style="margin-bottom: 10px"
+    ><a
+      style="cursor: pointer; text-decoration: underline; color: brown"
+      (click)="setCurrentLocation()"
+      >click to use current location</a
+    ></small
+  >
   <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="10">
     <agm-marker
       *ngFor="let pizzastore of pizzaStores"
@@ -11,7 +24,7 @@
     <agm-marker
       [latitude]="latitude"
       [longitude]="longitude"
-      [markerDraggable]="true"
+      [markerDraggable]="false"
       [label]="Me"
     ></agm-marker>
     <agm-direction
@@ -26,5 +39,8 @@
   <h3 *ngIf="showRoute">
     {{ currentPizzaStore.name | titlecase }}, Rating:
     {{ currentPizzaStore.rating }}, Near {{ currentPizzaStore.vicinity }},
+    RatedBy:{{ currentPizzaStore.user_ratings_total }} users, Status:{{
+      currentPizzaStore.business_status
+    }}
   </h3>
 </div>

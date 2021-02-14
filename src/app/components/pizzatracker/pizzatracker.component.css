@@ -1,3 +1,13 @@
 agm-map {
   height: 500px;
 }
+.input-place-search {
+  width: -webkit-fill-available;
+  border-radius: 5px;
+}
+a {
+  cursor: pointer;
+  text-decoration: underline;
+  color: brown;
+  margin-bottom: 10px;
+}

@@ -10,6 +10,8 @@ import {
 import { MapsAPILoader } from '@agm/core';
 import { PizzaService } from 'src/app/services/pizza.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
+import { Address } from 'ngx-google-places-autocomplete/objects/address';
 @Component({
   selector: 'app-pizzatracker',
   templateUrl: './pizzatracker.component.html',
@@ -26,8 +28,8 @@ export class PizzatrackerComponent implements OnInit {
   coordinates: any;
   zoom: number | undefined;
   address: string | undefined;
-  latitude: any;
-  longitude: any;
+  latitude: any = '28.7041';
+  longitude: any = '77.1025';
   private geoCoder: any;
   pizzaStores: any = [];
   showRoute: boolean = false;
@@ -36,18 +38,19 @@ export class PizzatrackerComponent implements OnInit {
   @ViewChild('search')
   public searchElementRef: ElementRef | undefined;
   waypoints: any = [];
+  @ViewChild('placesRef') placesRef: GooglePlaceDirective;
   public renderOptions = {
     suppressMarkers: true,
   };
 
   public markerOptions = {
     origin: {
-      label: 'Me',
+      label: 'You',
       draggable: false,
       waypoints: [],
     },
     destination: {
-      label: 'MARKER LABEL',
+      label: 'Pizza',
       waypoints: [],
     },
     waypoints: {},
@@ -65,16 +68,21 @@ export class PizzatrackerComponent implements OnInit {
       this.geoCoder = new google.maps.Geocoder();
     });
   }
-  private setCurrentLocation() {
+  public handleAddressChange(address: Address) {
+    this.latitude = address.geometry.location.lat();
+    this.longitude = address.geometry.location.lng();
+    this.showRoute = false;
+    this.address = address.formatted_address;
+    this.origin = { lat: this.latitude, lng: this.longitude };
+    this.getPizzaStores(this.latitude, this.longitude);
+  }
+  setCurrentLocation() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
-        console.log(position);
         this.latitude = position.coords.latitude;
         this.longitude = position.coords.longitude;
         this.origin = { lat: this.latitude, lng: this.longitude };
         this.destination = { lat: this.latitude, lng: this.longitude };
-        console.log(this.latitude + ',' + this.longitude);
-        //this.zoom = 40;
         this.getAddress(this.latitude, this.longitude);
       });
     }
@@ -103,9 +111,8 @@ export class PizzatrackerComponent implements OnInit {
   getPizzaStores(lat: number, long: number) {
     const queryData = {
       location: lat + ',' + long,
-      type: 'restaurant',
-      keyword: 'pizza',
-      radius: '30000',
+      keyword: 'pizza OR Domino',
+      radius: '20000',
     };
     this._pizzaService.getPizzaStores(queryData).subscribe(
       (res) => {
@@ -118,6 +125,9 @@ export class PizzatrackerComponent implements OnInit {
   processStores(stores) {
     console.log(stores);
     this.pizzaStores = stores;
+    if (this.pizzaStores.length == 0) {
+      alert('No pizza stores around you');
+    }
   }
   getDirection() {
     this.origin = { lat: 24.799524, lng: 120.975017 };

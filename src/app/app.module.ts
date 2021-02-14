@@ -13,6 +13,7 @@ import { AgmCoreModule } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';
 import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,6 +24,7 @@ import { environment } from 'src/environments/environment';
     PizzatrackerComponent,
   ],
   imports: [
+    GooglePlaceModule,
     BrowserModule,
     FormsModule,
     AppRoutingModule,
