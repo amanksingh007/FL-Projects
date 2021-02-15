@@ -36,9 +36,11 @@ export class PizzatrackerComponent implements OnInit {
   showRoute: boolean = false;
   currentPizzaStore: any;
   Me: string = 'You';
+  isCurrent:string=null;
   @ViewChild('search')
   public searchElementRef: ElementRef | undefined;
   waypoints: any = [];
+  showMe:boolean=true;
   travelDetails: any = {
     time: 'calculating travel time',
     distance: '',
@@ -57,11 +59,13 @@ export class PizzatrackerComponent implements OnInit {
       label: 'You',
       draggable: false,
       waypoints: [],
+      icon:"http://image.ibb.co/bZ3wLn/origin.png"
     },
     destination: {
       label: 'Pizza',
       waypoints: [],
       infoWindow: '23.7km,1hour',
+      opacity:0
     },
     waypoints: {},
   };
@@ -81,13 +85,15 @@ export class PizzatrackerComponent implements OnInit {
   public handleAddressChange(address: Address) {
     this.infoWindowOpened = null;
     this.previous_info_window = null;
-
     this.latitude = address.geometry.location.lat();
     this.longitude = address.geometry.location.lng();
     this.showRoute = false;
+    this.showMe=true;
     this.address = address.formatted_address;
     this.origin = { lat: this.latitude, lng: this.longitude };
     this.getAddress(this.latitude, this.longitude);
+    console.log("On Change-Loc:"+this.latitude+","+this.longitude);
+    console.log(this.origin);
   }
   setCurrentLocation() {
     if ('geolocation' in navigator) {
@@ -108,7 +114,6 @@ export class PizzatrackerComponent implements OnInit {
       (results: any, status: any) => {
         if (status === 'OK') {
           if (results[0]) {
-            //this.zoom = 0;
             this.address = results[0].formatted_address;
             console.log(this.address);
           } else {
@@ -164,12 +169,16 @@ export class PizzatrackerComponent implements OnInit {
   drawDirection(dest, infoWindow) {
     console.log(dest);
     this.travelDetails.infoId = dest.place_id;
+    this.isCurrent=this.destination.place_id;
     this.destination = {
       lat: dest.geometry.location.lat,
       lng: dest.geometry.location.lng,
     };
+    console.log(this.origin);
+    console.log(this.destination);
     this.currentPizzaStore = dest;
     this.showRoute = true;
+    this.showMe=false;
     const data = {
       origin: this.origin.lat + ',' + this.origin.lng,
       destination: this.destination.lat + ',' + this.destination.lng,

@@ -14,8 +14,8 @@
     ></small
   >
   <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="10">
-    <agm-marker
-      *ngFor="let pizzastore of pizzaStores"
+    <agm-marker *ngFor="let pizzastore of pizzaStores"
+       
       [latitude]="pizzastore?.geometry.location.lat"
       [longitude]="pizzastore?.geometry.location.lng"
       [markerDraggable]="false"
@@ -32,11 +32,13 @@
       >
     </agm-marker>
     <agm-marker
+    *ngIf="showMe"
       [latitude]="latitude"
       [longitude]="longitude"
-      [markerDraggable]="false"
+      [markerDraggable]="false" [iconUrl]="markerOptions.origin.icon"
       [label]="Me"
     ></agm-marker>
+
     <agm-direction
       *ngIf="showRoute"
       [origin]="origin"
