@@ -21,7 +21,7 @@
       [markerDraggable]="false"
       (markerClick)="drawDirection(pizzastore)"
     >
-      <agm-info-window
+      <agm-info-window *ngIf="travelDetails.infoId == pizzastore.place_id"
         >{{ travelDetails.distance }},{{ travelDetails.time }}</agm-info-window
       >
     </agm-marker>

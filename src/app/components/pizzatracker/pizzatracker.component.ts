@@ -54,7 +54,7 @@ export class PizzatrackerComponent implements OnInit {
     destination: {
       label: 'Pizza',
       waypoints: [],
-      infoWindow:"23.7km,1hour"
+      infoWindow: '23.7km,1hour',
     },
     waypoints: {},
   };
@@ -150,11 +150,13 @@ export class PizzatrackerComponent implements OnInit {
       destination: this.destination.lat + ',' + this.destination.lng,
       departure_time: 'now',
     };
+    this.travelDetails.infoId = dest.place_id;
     this._pizzaService.getTravelTime(data).subscribe((res) => {
       console.log(res.results);
       let data = res.results.routes[0].legs[0];
       this.travelDetails.time = data.duration.text;
       this.travelDetails.distance = data.distance.text;
+      this.travelDetails.infoId = dest.place_id;
     });
   }
 
