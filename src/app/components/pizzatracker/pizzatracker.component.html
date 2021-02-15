@@ -19,10 +19,16 @@
       [latitude]="pizzastore?.geometry.location.lat"
       [longitude]="pizzastore?.geometry.location.lng"
       [markerDraggable]="false"
-      (markerClick)="drawDirection(pizzastore)"
+      (markerClick)="drawDirection(pizzastore, iw)"
     >
-      <agm-info-window *ngIf="travelDetails.infoId == pizzastore.place_id"
-        >{{ travelDetails.distance }},{{ travelDetails.time }}</agm-info-window
+      <agm-info-window #iw>
+        {{ travelDetails.distance }},{{ travelDetails.time }}
+        <br />
+        <small
+          ><a href="{{ travelDetails.navigationUrl }}" target="_blank"
+            >start navigation</a
+          ></small
+        ></agm-info-window
       >
     </agm-marker>
     <agm-marker

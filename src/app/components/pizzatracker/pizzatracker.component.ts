@@ -39,7 +39,14 @@ export class PizzatrackerComponent implements OnInit {
   @ViewChild('search')
   public searchElementRef: ElementRef | undefined;
   waypoints: any = [];
-  travelDetails: any = { time: '', distnce: '' };
+  travelDetails: any = {
+    time: 'calculating travel time',
+    distance: '',
+    navigationUrl: 'https://www.google.com/maps/dir/?api=1',
+  };
+  navUrl = 'https://www.google.com/maps/dir/?api=1';
+  infoWindowOpened = null;
+  previous_info_window = null;
   @ViewChild('placesRef') placesRef: GooglePlaceDirective;
   public renderOptions = {
     suppressMarkers: true,
@@ -129,7 +136,7 @@ export class PizzatrackerComponent implements OnInit {
     console.log(stores);
     this.pizzaStores = stores;
     if (this.pizzaStores.length == 0) {
-      alert('No pizza stores around you');
+      alert('No pizza shops around you. Try searching with different location');
     }
   }
   getDirection() {
@@ -137,8 +144,24 @@ export class PizzatrackerComponent implements OnInit {
     this.destination = { lat: 24.799524, lng: 120.975017 };
   }
 
-  drawDirection(dest) {
+  processWindow(infoWindow) {
+    if (this.previous_info_window == null)
+      this.previous_info_window = infoWindow;
+    else {
+      this.infoWindowOpened = infoWindow;
+      this.previous_info_window.close();
+    }
+    this.previous_info_window = infoWindow;
+  }
+  close_window() {
+    if (this.previous_info_window != null) {
+      this.previous_info_window.close();
+    }
+  }
+  drawDirection(dest, infoWindow) {
+    this.processWindow(infoWindow);
     console.log(dest);
+    this.travelDetails.infoId = dest.place_id;
     this.destination = {
       lat: dest.geometry.location.lat,
       lng: dest.geometry.location.lng,
@@ -151,15 +174,27 @@ export class PizzatrackerComponent implements OnInit {
       departure_time: 'now',
     };
     this.travelDetails.infoId = dest.place_id;
+    console.log(this.travelDetails.infoId);
+    this.travelDetails.navigationUrl = this.navUrl + this.constructNavigation();
     this._pizzaService.getTravelTime(data).subscribe((res) => {
-      console.log(res.results);
+      //console.log(res.results);
       let data = res.results.routes[0].legs[0];
+      this.travelDetails.infoId = dest.place_id;
       this.travelDetails.time = data.duration.text;
       this.travelDetails.distance = data.distance.text;
       this.travelDetails.infoId = dest.place_id;
     });
+    this.travelDetails.infoId = dest.place_id;
   }
-
+  constructNavigation() {
+    const org = '&origin=' + this.origin.lat + ',' + this.origin.lng;
+    const dest =
+      '&destination=' + this.destination.lat + ',' + this.destination.lng;
+    const dirMode = '&dir_action=navigate&travelmode=driving';
+    const navParameters = org + dest + dirMode;
+    console.log(navParameters);
+    return navParameters;
+  }
   public mapReadyHandler(map: google.maps.Map): void {
     this.map = map;
     this.mapClickListener = this.map.addListener(
