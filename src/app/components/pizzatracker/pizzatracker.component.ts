@@ -79,12 +79,15 @@ export class PizzatrackerComponent implements OnInit {
     });
   }
   public handleAddressChange(address: Address) {
+    this.infoWindowOpened = null;
+    this.previous_info_window = null;
+
     this.latitude = address.geometry.location.lat();
     this.longitude = address.geometry.location.lng();
     this.showRoute = false;
     this.address = address.formatted_address;
     this.origin = { lat: this.latitude, lng: this.longitude };
-    this.getPizzaStores(this.latitude, this.longitude);
+    this.getAddress(this.latitude, this.longitude);
   }
   setCurrentLocation() {
     if ('geolocation' in navigator) {
@@ -159,7 +162,6 @@ export class PizzatrackerComponent implements OnInit {
     }
   }
   drawDirection(dest, infoWindow) {
-    this.processWindow(infoWindow);
     console.log(dest);
     this.travelDetails.infoId = dest.place_id;
     this.destination = {
@@ -183,6 +185,7 @@ export class PizzatrackerComponent implements OnInit {
       this.travelDetails.time = data.duration.text;
       this.travelDetails.distance = data.distance.text;
       this.travelDetails.infoId = dest.place_id;
+      this.processWindow(infoWindow);
     });
     this.travelDetails.infoId = dest.place_id;
   }
