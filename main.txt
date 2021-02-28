@@ -1,1 +1,187 @@
-Main Branch
+var pg = require("pg");
+const express = require("express");
+const config = require("./config.js");
+const DB_CONSTR = config.DB_CONSTR;
+const app = express();
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const client = new pg.Client(DB_CONSTR);
+app.use(express.json());
+
+const saltRounds = 10;
+client.connect(function (err) {
+  if (err) {
+    return console.error("could not connect to postgres", err);
+    //process.exit();
+  }
+});
+
+app.post("/register", async (req, res) => {
+  req.body.password = await getHash(req.body.password);
+  const {
+    name,
+    email,
+    password,
+    address,
+    role,
+    department,
+    gender,
+    mobile,
+  } = req.body;
+  if (!email || !password || !role || !department)
+    return res.status(400).send({ res: "All fields are required." });
+  const QUERY = `INSERT INTO USERS (name,email,password,address,role,department,gender,mobile) VALUES('${name}','${email}','${password}','${address}','${role}','${department}','${gender}','${mobile}')`;
+  //console.log(QUERY);
+  client.query(QUERY, function (err, result) {
+    if (err) {
+      console.log(err);
+      return res.status(400).send({ res: "Already registered" });
+    }
+    return res.status(200).send({ res: "Registered" });
+  });
+});
+
+app.post("/login", async (req, res) => {
+  //req.body.password = await getHash(req.body.password);
+  const { email, password } = req.body;
+  const QUERY = `SELECT * FROM USERS where email='${email}'`;
+  //console.log(QUERY);
+  client.query(QUERY, async function (err, result) {
+    if (err) {
+      console.log(err);
+      return res.status(400).send({ res: "Server Error. Try again" });
+    }
+    if (result.rowCount == 1) {
+      const user = result.rows[0];
+      const isPasswordCorrect = bcrypt.compareSync(
+        req.body.password,
+        user.password
+      );
+      if (isPasswordCorrect) {
+        const jwtToken = await createAuthToken(user);
+        res.status(200).send({ res: jwtToken });
+      } else {
+        return res.status(400).send({ res: "Wrong Password." });
+      }
+    } else return res.status(400).send({ res: "User not found" });
+  });
+});
+
+app.get("/profile", async (req, res) => {
+  const token = req.header("x-auth-token");
+  const isAuthentic = await authenticator(token);
+  if (isAuthentic.valid) {
+    const email = isAuthentic.user.email;
+    const QUERY = `SELECT * FROM USERS where email='${email}'`;
+    client.query(QUERY, async function (err, result) {
+      if (err) {
+        console.log(err);
+        return res.status(400).send({ res: "User not registered with email." });
+      }
+      let user = result.rows[0];
+      delete user.password;
+      return res.status(200).send({ res: user });
+    });
+  } else {
+    return res.status(401).send({ res: "Session expired.Login again." });
+  }
+});
+
+app.get("/roles", async (req, res) => {
+  const QUERY = "SELECT * FROM ROLES";
+  client.query(QUERY, function (err, result) {
+    if (err) {
+      return res.status(400).send({ res: "Roles feetching failed" });
+    }
+    var roles = result.rows.map(function (item) {
+      return item["name"];
+    });
+    return res.status(200).send({ res: roles });
+  });
+});
+app.get("/departments", async (req, res) => {
+  const QUERY = "SELECT * FROM DEPARTMENTS";
+  client.query(QUERY, function (err, result) {
+    if (err) {
+      return res.status(400).send({ res: "Could not fetch departments" });
+    }
+    var departments = result.rows.map(function (item) {
+      return item["name"];
+    });
+    return res.status(200).send({ res: departments });
+  });
+});
+
+async function getHash(password) {
+  const salt = bcrypt.genSaltSync(saltRounds);
+  const hash = bcrypt.hashSync(password, salt);
+  return hash;
+}
+
+async function createAuthToken(user) {
+  const token = jwt.sign(
+    {
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      department: user.department,
+    },
+    config.JWT_SECRET_KEY,
+    {
+      expiresIn: "1d",
+    }
+  );
+  return token;
+}
+
+async function authenticator(token) {
+  if (!token) return { valid: false };
+  try {
+    const decoded = jwt.verify(token, config.JWT_SECRET_KEY);
+    return { valid: true, user: decoded };
+  } catch (ex) {
+    return { valid: false };
+  }
+}
+
+app.listen(6000, () => {
+  console.log("Server running");
+});
+
+/*
+CREATE TABLE USERS(
+    NAME VARCHAR(50) NOT NULL,
+    EMAIL VARCHAR(50) PRIMARY KEY,
+    PASSWORD VARCHAR(255) NOT NULL,
+    ADDRESS VARCHAR(100) NOT NULL,
+    ROLE  VARCHAR(20) NOT NULL,
+    DEPARTMENT VARCHAR(20) NOT NULL,
+    GENDER VARCHAR(20),
+    MOBILE VARCHAR(15) NOT NULL
+);
+
+
+CREATE TABLE ROLES(
+    NAME VARCHAR(50) PRIMARY KEY
+);
+INSERT INTO ROLES VALUES ('ADMIN');
+INSERT INTO ROLES VALUES ('USER');
+
+
+
+
+CREATE TABLE DEPARTMENTS(
+    NAME VARCHAR(50) PRIMARY KEY
+);
+INSERT INTO DEPARTMENTS VALUES ('HR');
+INSERT INTO DEPARTMENTS VALUES ('ADMIN');
+INSERT INTO DEPARTMENTS VALUES ('IT');
+INSERT INTO DEPARTMENTS VALUES ('STORE');
+INSERT INTO DEPARTMENTS VALUES ('MECHANICAL');
+INSERT INTO DEPARTMENTS VALUES ('ELECTRICAL');
+
+select * from users;
+select * from  roles;
+select * from departments;
+
+*/
